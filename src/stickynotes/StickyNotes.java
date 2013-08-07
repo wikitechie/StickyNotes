@@ -30,6 +30,7 @@ public class StickyNotes {
      */
     public void delete(Note note) {
         notes.remove(note); // this method will delete by value (by comparing the given object to the lists' objects)
+        note.dispose();
     }
     
     /**
