@@ -4,6 +4,7 @@
  */
 package stickynotes;
 
+import java.sql.Time;
 import javax.swing.JFrame;
 import utility.ComponentMover;
 
@@ -45,6 +46,10 @@ public class Note extends javax.swing.JFrame {
     public void load(String body) {
         bodyTextArea.setText(body);
     }
+    
+    public String getText() {
+        return bodyTextArea.getText();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -57,6 +62,8 @@ public class Note extends javax.swing.JFrame {
 
         customTitleBar = new javax.swing.JPanel();
         closeLabel = new javax.swing.JLabel();
+        newLabel = new javax.swing.JLabel();
+        exitLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         bodyTextArea = new javax.swing.JTextArea();
 
@@ -72,19 +79,42 @@ public class Note extends javax.swing.JFrame {
             }
         });
 
+        newLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        newLabel.setText("+");
+        newLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                newLabelMouseClicked(evt);
+            }
+        });
+
+        exitLabel.setFont(new java.awt.Font("DialogInput", 1, 14)); // NOI18N
+        exitLabel.setText("->]");
+        exitLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exitLabelMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout customTitleBarLayout = new javax.swing.GroupLayout(customTitleBar);
         customTitleBar.setLayout(customTitleBarLayout);
         customTitleBarLayout.setHorizontalGroup(
             customTitleBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, customTitleBarLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(newLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(exitLabel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(closeLabel)
                 .addContainerGap())
         );
         customTitleBarLayout.setVerticalGroup(
             customTitleBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(customTitleBarLayout.createSequentialGroup()
-                .addComponent(closeLabel)
+                .addGroup(customTitleBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(closeLabel)
+                    .addComponent(newLabel)
+                    .addComponent(exitLabel))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -114,6 +144,14 @@ public class Note extends javax.swing.JFrame {
     private void closeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeLabelMouseClicked
         this.delete();
     }//GEN-LAST:event_closeLabelMouseClicked
+
+    private void newLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newLabelMouseClicked
+        this.manager.newNote("");
+    }//GEN-LAST:event_newLabelMouseClicked
+
+    private void exitLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitLabelMouseClicked
+        this.manager.exit();
+    }//GEN-LAST:event_exitLabelMouseClicked
 
     /**
      * @param args the command line arguments
@@ -153,7 +191,9 @@ public class Note extends javax.swing.JFrame {
     private javax.swing.JTextArea bodyTextArea;
     private javax.swing.JLabel closeLabel;
     private javax.swing.JPanel customTitleBar;
+    private javax.swing.JLabel exitLabel;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel newLabel;
     // End of variables declaration//GEN-END:variables
 
 

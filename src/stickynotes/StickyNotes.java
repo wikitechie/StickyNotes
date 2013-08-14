@@ -4,7 +4,20 @@
  */
 package stickynotes;
 
+import java.awt.Dialog;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.LinkedList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.plaf.OptionPaneUI;
 
 /**
  *
@@ -37,18 +50,61 @@ public class StickyNotes {
      * Creates a Note by giving its body text
      * @param body the body text
      */
-    public void create(String body) {
+    protected Note create(String body) {
         // here we should create a new Note giving it our instance (this) as a parameter so it knows its parent :D
-        notes.add(new Note(this, body));
+        Note my_note = new Note(this, body);
+        notes.add(my_note);
+        return my_note;
+    }
+    
+    static private String readFile(String path, Charset encoding) 
+    throws IOException
+    {
+      byte[] encoded = Files.readAllBytes(Paths.get(path));
+      return encoding.decode(ByteBuffer.wrap(encoded)).toString();
     }
     
     private void loadNotes() {
-        // Just put any content to try the app
-        create("aksdaasdasdasdasdasd");
-        create("alksdasdasdaaaaaaaaa");
+        File notesFolder = new File(System.getProperty("user.home") + "/.sticky_notes/notes");
+        notesFolder.mkdirs();
+        // we are sure that $HOME/.sticky_notes/notes
+        File[] notesFiles = notesFolder.listFiles();
         
-        //TODO replace this code with files code
-        //TODO we should load the notes from files
+        for(File note : notesFiles) {
+            if (note.isFile()) {
+                try {
+                    create(readFile(note.getPath(), Charset.forName("UTF-8")));
+                } catch (IOException ex) {
+                    //TODO show error dialog
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "StickyNotes: Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+        
+    }
+    
+    private void saveNotes() {
+        File notesFolder = new File(System.getProperty("user.home") + "/.sticky_notes/notes");
+        notesFolder.mkdirs();
+        File[] notesFiles = notesFolder.listFiles();
+        
+        // deleting old notes
+        for(File note : notesFiles) {
+            if (note.isFile()) {
+                note.delete();
+            }
+        }
+        
+        int i = 0;
+        for (Note note : this.notes) {
+            try {
+                PrintWriter writer = new PrintWriter(notesFolder.getPath() + '/' + i++ + ".txt");
+                writer.write(note.getText());
+                writer.close();
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "StickyNotes: Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
     
     /**
@@ -59,12 +115,26 @@ public class StickyNotes {
         // loading notes
         loadNotes();
         
+        if (notes.isEmpty())
+            create("");
+        
         // running/showing notes
         for(Note note : notes) { // this is foreach loop, it means : for each "note" as instance of "Note" in the collection "notes"
             // showing the note
             // the Note class is derived from JFrame Class so it can be shown by "setVisible(true)"
             note.setVisible(true);
         }
+        
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            @Override
+            public void run() {
+                saveNotes();
+            }
+        }));
+    }
+    
+    public void exit() {
+        System.exit(0);
     }
     
     /**
@@ -74,5 +144,9 @@ public class StickyNotes {
     public static void main(String[] args) {
         // creating a new StickyNotes Object (Our Manager Object) then asking it to run :)
         new StickyNotes().run();
+    }
+
+    void newNote(String body) {
+        this.create(body).setVisible(true);
     }
 }
