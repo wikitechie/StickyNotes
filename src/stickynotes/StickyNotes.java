@@ -137,6 +137,26 @@ public class StickyNotes {
         System.exit(0);
     }
     
+    public void show_All(){
+        for(Note note : notes) { // this is foreach loop, it means : for each "note" as instance of "Note" in the collection "notes"
+            // showing the note
+            // the Note class is derived from JFrame Class so it can be shown by "setVisible(true)"
+            if(note.isVisible()==false)
+                note.setVisible(true);
+        }
+    }
+    
+    public boolean all_hidden(){
+        boolean state = true;
+        for(Note note : notes) { // this is foreach loop, it means : for each "note" as instance of "Note" in the collection "notes"
+            // showing the note
+            // the Note class is derived from JFrame Class so it can be shown by "setVisible(true)"
+            if(note.isVisible())
+                state=false;
+        }
+        return state;
+    }
+    
     /**
      * this is the main method that JAVA will call
      * @param args the command line arguments

@@ -63,13 +63,21 @@ public class Note extends javax.swing.JFrame {
         customTitleBar = new javax.swing.JPanel();
         closeLabel = new javax.swing.JLabel();
         newLabel = new javax.swing.JLabel();
+        hide_Button = new javax.swing.JLabel();
+        shawall = new javax.swing.JLabel();
         exitLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         bodyTextArea = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setAlwaysOnTop(true);
+        setBackground(new java.awt.Color(255, 204, 255));
+        setBounds(new java.awt.Rectangle(0, 0, 0, 0));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setForeground(new java.awt.Color(204, 153, 255));
+        setLocationByPlatform(true);
         setUndecorated(true);
+
+        customTitleBar.setBackground(new java.awt.Color(225, 225, 225));
 
         closeLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         closeLabel.setText("x");
@@ -79,11 +87,28 @@ public class Note extends javax.swing.JFrame {
             }
         });
 
-        newLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        newLabel.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
         newLabel.setText("+");
         newLabel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 newLabelMouseClicked(evt);
+            }
+        });
+
+        hide_Button.setFont(new java.awt.Font("Calibri", 0, 14)); // NOI18N
+        hide_Button.setText("○");
+        hide_Button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                hide_ButtonMouseClicked(evt);
+            }
+        });
+
+        shawall.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
+        shawall.setText("•");
+        shawall.setToolTipText("");
+        shawall.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                shawallMouseClicked(evt);
             }
         });
 
@@ -102,25 +127,46 @@ public class Note extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, customTitleBarLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(newLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(exitLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(hide_Button)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(shawall)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 176, Short.MAX_VALUE)
                 .addComponent(closeLabel)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(exitLabel)
+                .addGap(8, 8, 8))
         );
         customTitleBarLayout.setVerticalGroup(
             customTitleBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(customTitleBarLayout.createSequentialGroup()
-                .addGroup(customTitleBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(closeLabel)
-                    .addComponent(newLabel)
-                    .addComponent(exitLabel))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(customTitleBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(customTitleBarLayout.createSequentialGroup()
+                        .addGroup(customTitleBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(closeLabel)
+                            .addComponent(newLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 7, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(hide_Button)
+                            .addComponent(exitLabel))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(customTitleBarLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(shawall, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
+        jScrollPane1.setBackground(new java.awt.Color(204, 204, 204));
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        jScrollPane1.setAutoscrolls(true);
+
+        bodyTextArea.setBackground(new java.awt.Color(248, 248, 248));
         bodyTextArea.setColumns(20);
+        bodyTextArea.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        bodyTextArea.setLineWrap(true);
         bodyTextArea.setRows(5);
         bodyTextArea.setBorder(null);
+        bodyTextArea.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        bodyTextArea.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        bodyTextArea.setDragEnabled(true);
         jScrollPane1.setViewportView(bodyTextArea);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -128,30 +174,40 @@ public class Note extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(customTitleBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 259, Short.MAX_VALUE)
+            .addComponent(jScrollPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(customTitleBar, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void closeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeLabelMouseClicked
-        this.delete();
-    }//GEN-LAST:event_closeLabelMouseClicked
+    private void exitLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitLabelMouseClicked
+        this.manager.exit();
+    }//GEN-LAST:event_exitLabelMouseClicked
+
+    private void shawallMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_shawallMouseClicked
+        this.manager.show_All();
+    }//GEN-LAST:event_shawallMouseClicked
+
+    private void hide_ButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hide_ButtonMouseClicked
+        setVisible(false);
+        if(this.manager.all_hidden())
+        this.manager.exit();
+    }//GEN-LAST:event_hide_ButtonMouseClicked
 
     private void newLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newLabelMouseClicked
         this.manager.newNote("");
     }//GEN-LAST:event_newLabelMouseClicked
 
-    private void exitLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitLabelMouseClicked
-        this.manager.exit();
-    }//GEN-LAST:event_exitLabelMouseClicked
+    private void closeLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_closeLabelMouseClicked
+        this.delete();
+    }//GEN-LAST:event_closeLabelMouseClicked
 
     /**
      * @param args the command line arguments
@@ -192,8 +248,10 @@ public class Note extends javax.swing.JFrame {
     private javax.swing.JLabel closeLabel;
     private javax.swing.JPanel customTitleBar;
     private javax.swing.JLabel exitLabel;
+    private javax.swing.JLabel hide_Button;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel newLabel;
+    private javax.swing.JLabel shawall;
     // End of variables declaration//GEN-END:variables
 
 
